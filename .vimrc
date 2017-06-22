@@ -1,134 +1,158 @@
-" vim-plug configuration
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
-
-call plug#begin('~/.vim/plugged')
-
-Plug 'pearofducks/ansible-vim'
-Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdtree'
-Plug 'vim-syntastic/syntastic'
-
-" Add plugins to &runtimepath
-call plug#end()
-
-" Leader
-let mapleader = " "
-
-set backspace=2   " Backspace deletes like most programs in insert mode
-set nobackup
-set nowritebackup
-set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
-set history=50
-set ruler         " show the cursor position all the time
-set showcmd       " display incomplete commands
-set incsearch     " do incremental searching
-set laststatus=2  " Always display the status line
-set autowrite     " Automatically :write before running commands
-set pastetoggle=<F10>
-set mouse=a       " Enable mouse in all modes
-set ttymouse=xterm2
-
-" Color adjustments
-syntax enable
-set background=dark
-colorscheme solarized
-
-if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
-endif
-
-filetype plugin indent on
-
-augroup vimrcEx
-  autocmd!
-
- " When editing a file, always jump to the last known cursor position.
- " Don't do it for commit messages, when the position is invalid, or when
- " inside an event handler (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
- " Set syntax highlighting for specific file types
-  autocmd BufRead,BufNewFile Appraisals set filetype=ruby
-  autocmd BufRead,BufNewFile *.md set filetype=markdown
-  autocmd BufRead,BufNewFile .{jscs,jshint,eslint}rc set filetype=json
-  autocmd BufRead,BufNewFile .j2 set filetype=jinja2
-augroup END
-
-" When the type of shell script is /bin/sh, assume a POSIX-compatible
-" shell for syntax highlighting purposes.
-let g:is_posix = 1
-
-" Expand tab to 4 spaces
-set tabstop=4
+set nocompatible
+ 
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+ 
+" Enable syntax highlighting
+syntax on
+ 
+ 
+"------------------------------------------------------------
+" Must have options {{{1
+"
+" These are highly recommended options.
+ 
+" Vim with default settings does not allow easy switching between multiple files
+" in the same editor window. Users can use multiple split windows or multiple
+" tab pages to edit multiple files, but it is still best to enable an option to
+" allow easier switching between files.
+"
+" One such option is the 'hidden' option, which allows you to re-use the same
+" window and switch from an unsaved buffer without saving it first. Also allows
+" you to keep an undo history for multiple files when re-using the same window
+" in this way. Note that using persistent undo also lets you undo in multiple
+" files even in the same window, but is less efficient and is actually designed
+" for keeping undo history after closing Vim entirely. Vim will complain if you
+" try to quit without saving, and swap files will keep you safe if your computer
+" crashes.
+set hidden
+ 
+" Note that not everyone likes working this way (with the hidden option).
+" Alternatives include using tabs or split windows instead of re-using the same
+" window as mentioned above, and/or either of the following options:
+" set confirm
+" set autowriteall
+ 
+" Better command-line completion
+set wildmenu
+ 
+" Show partial commands in the last line of the screen
+set showcmd
+ 
+" Highlight searches (use <C-L> to temporarily turn off highlighting; see the
+" mapping of <C-L> below)
+set hlsearch
+ 
+" Modelines have historically been a source of security vulnerabilities. As
+" such, it may be a good idea to disable them and use the securemodelines
+" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
+" set nomodeline
+ 
+ 
+"------------------------------------------------------------
+" Usability options {{{1
+"
+" These are options that users frequently set in their .vimrc. Some of them
+" change Vim's behaviour in ways which deviate from the true Vi way, but
+" which are considered to add usability. Which, if any, of these options to
+" use is very much a personal preference, but they are harmless.
+ 
+" Use case insensitive search, except when using capital letters
+set ignorecase
+set smartcase
+ 
+" Allow backspacing over autoindent, line breaks and start of insert action
+set backspace=indent,eol,start
+ 
+" When opening a new line and no filetype-specific indenting is enabled, keep
+" the same indent as the line you're currently on. Useful for READMEs, etc.
+set autoindent
+ 
+" Stop certain movements from always going to the first character of a line.
+" While this behaviour deviates from that of Vi, it does what most users
+" coming from other editors would expect.
+set nostartofline
+ 
+" Display the cursor position on the last line of the screen or in the status
+" line of a window
+set ruler
+ 
+" Always display the status line, even if only one window is displayed
+set laststatus=2
+ 
+" Instead of failing a command because of unsaved changes, instead raise a
+" dialogue asking if you wish to save changed files.
+set confirm
+ 
+" Use visual bell instead of beeping when doing something wrong
+set visualbell
+ 
+" And reset the terminal code for the visual bell. If visualbell is set, and
+" this line is also included, vim will neither flash nor beep. If visualbell
+" is unset, this does nothing.
+set t_vb=
+ 
+" Enable use of the mouse for all modes
+set mouse=a
+ 
+" Set the command window height to 2 lines, to avoid many cases of having to
+" "press <Enter> to continue"
+set cmdheight=2
+ 
+" Display line numbers on the left
+set number
+ 
+" Quickly time out on keycodes, but never time out on mappings
+set notimeout ttimeout ttimeoutlen=200
+ 
+" Use <F11> to toggle between 'paste' and 'nopaste'
+set pastetoggle=<F11>
+ 
+ 
+"------------------------------------------------------------
+" Indentation options {{{1
+"
+" Indentation settings according to personal preference.
+ 
+" Indentation settings for using 4 spaces instead of tabs.
+" Do not change 'tabstop' from its default value of 8 with this setup.
+set shiftwidth=4
 set softtabstop=4
 set expandtab
-set shiftwidth=4
-set smarttab
+ 
+" Indentation settings for using hard tabs for indent. Display tabs as
+" four characters wide.
+"set shiftwidth=4
+"set tabstop=4
+ 
+" Map <C-L> (redraw screen) to also turn off search highlighting until the
+" next search
+nnoremap <C-L> :nohl<CR><C-L>
 
-" Display extra whitespace and tabs as characters, but not by default
-set list
-set listchars=tab:»·,trail:·,nbsp:·
-
-" Use one space, not two, after punctuation.
-set nojoinspaces
-
-" Numbers
-set number
-set numberwidth=5
-
-" Run commands that require an interactive shell
-nnoremap <Leader>r :RunInInteractiveShell<space>
-
-" Treat <li> and <p> tags like the block tags they are
-let g:html_indent_tags = 'li\|p'
-
-" Open new split panes to right and bottom, which feels more natural
-set splitbelow
-set splitright
-
-nnoremap <C-n> <c-w><
-nnoremap <C-m> <c-w>>
-
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
-" configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-let g:syntastic_eruby_ruby_quiet_messages =
-    \ {"regex": "possibly useless use of a variable in void context"}
-
-" Always use vertical diffs
-set diffopt+=vertical
-
-" Set the statusline
-set statusline=%f         " Path to the file
-set statusline+=%y        " Filetype of the file
-set statusline+=%=        " Switch to the right side
-set statusline+=Current:\ %-4l " Display current line
-set statusline+=Total:\ %-4L " Dispay total lines
-set statusline+=%{fugitive#statusline()} " Git status
-
-" map nerdtree viewport to CTRL+n
-
-map <C-t> :NERDTreeToggle<CR>
-
-" Options for syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+augroup configgroup
+    autocmd!
+    autocmd VimEnter * highlight clear SignColumn
+    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
+                \:call <SID>StripTrailingWhitespaces()
+    autocmd FileType java setlocal noexpandtab
+    autocmd FileType java setlocal list
+    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType php setlocal expandtab
+    autocmd FileType php setlocal list
+    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType ruby setlocal tabstop=2
+    autocmd FileType ruby setlocal shiftwidth=2
+    autocmd FileType ruby setlocal softtabstop=2
+    autocmd FileType ruby setlocal commentstring=#\ %s
+    autocmd FileType python setlocal commentstring=#\ %s
+    autocmd BufEnter *.cls setlocal filetype=java
+    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+    autocmd BufEnter Makefile setlocal noexpandtab
+    autocmd BufEnter *.sh setlocal tabstop=2
+    autocmd BufEnter *.sh setlocal shiftwidth=2
+    autocmd BufEnter *.sh setlocal softtabstop=2
+augroup END
