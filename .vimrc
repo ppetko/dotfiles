@@ -1,3 +1,5 @@
+colorscheme onedark
+
 set nocompatible
  
 " Attempt to determine the type of a file based on its name and possibly its

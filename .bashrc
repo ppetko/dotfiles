@@ -11,7 +11,7 @@ set -o vi
 # dircolors
 if [ -e ~/.dircolors ]
 then
-  eval `dircolors -b ~/.dircolors`
+      eval `dircolors -b ~/.dircolors`
 fi
 
 # Tab complete sudo commands
