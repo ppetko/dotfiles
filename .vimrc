@@ -10,7 +10,8 @@ filetype indent plugin on
 " Enable syntax highlighting
 syntax on
  
- 
+au BufRead,BufNewFile *.go set filetype=go
+
 "------------------------------------------------------------
 " Must have options {{{1
 "
