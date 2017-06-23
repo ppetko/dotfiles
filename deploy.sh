@@ -13,7 +13,7 @@ rm -rf onedark.vim/
 cp go.vim $HOME/.vim/syntax/go.vim
 
 # Copy all of our dotfiles to the home directory
-for i in .vimrc .dircolors .bashrc .bash_profile;
+for i in .vimrc .dircolors .bashrc .bash_profile .gitconfig;
 do
     cp $i $HOME/$i
 done
