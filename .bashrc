@@ -21,6 +21,7 @@ complete -cf sudo
 export GOROOT=/home/$USER/bin/go/
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=/home/$USER/gocode/
+export PATH=$GOPATH/bin:$PATH
 
 ## PS1
 STARTCOLOR='\e[33m';
