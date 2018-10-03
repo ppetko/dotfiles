@@ -1,21 +1,32 @@
-# Download bunch of colors 
-git clone https://github.com/flazz/vim-colorschemes.git
-cp vim-colorschemes/colors/*  ~/.vim/colors/
-rm -rf vim-colorschemes/
+#!/bin/bash
 
-# Install onedark theme
-git clone https://github.com/joshdick/onedark.vim
-cp  onedark.vim/colors/onedark.vim  ~/.vim/colors/
-cp onedark.vim/autoload/onedark.vim  ~/.vim/autoload/
-rm -rf onedark.vim/
+# Detect the platform 
+OS="`uname`"
+case $OS in
+  'Linux')
+    OS='Linux'
+    alias ls='ls --color=auto'
+    ;;
+  'Darwin') 
+    OS='Mac'
+    ;;
+  *) ;;
+esac
 
-##TODO add golang support
-cp go.vim $HOME/.vim/syntax/go.vim
+if [ "${OS}" == "Linux" ]; then
 
-# Copy all of our dotfiles to the home directory
-for i in .vimrc .dircolors .bashrc .bash_profile .gitconfig .go.vim; 
-do
-    cp $i $HOME/$i
-done
+	for i in .vimrc .dircolors .bashrc .bash_profile .gitconfig ; 
+	do
+	    cp $i $HOME/$i
+	done
 
-source  ~/.bashrc
+	cp -rf ./vim $HOME/.vim
+	cp .go.vim $HOME/.vim/syntax/go.vim
+
+	source  ~/.bashrc
+
+
+elif  [ "${OS}" == "Darwin" ]
+then
+	echo "implement mac os dotfiles"
+fi

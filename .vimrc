@@ -65,7 +65,12 @@ set hlsearch
 " Use case insensitive search, except when using capital letters
 set ignorecase
 set smartcase
- 
+
+" Display line numbers on the left
+set number
+
+set paste
+
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
  
