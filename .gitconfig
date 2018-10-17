@@ -7,5 +7,5 @@
         hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
 
 [user]
-	name = Petko Petkov
+	name = petkop
 	email = 

@@ -23,6 +23,8 @@ export PATH=$PATH:$GOROOT/bin
 export GOPATH=/home/$USER/gocode/
 export PATH=$GOPATH/bin:$PATH
 
+export PATH=$PATH:/usr/local/go/bin
+
 # Reset
 RESET="\[\033[0m\]"
 
@@ -35,16 +37,6 @@ BLUE="\[\033[0;34m\]"
 PURPLE="\[\033[0;35m\]"
 CYAN="\[\033[0;36m\]"
 WHITE="\[\033[0;37m\]"
-
-# PS1 Prompt variables
-USER="\u"
-HOST="\h"
-TIME12H="\T"
-TIME12A="\@"
-PATHSHORT="\W"
-PATHFULL="\w"
-NEWLINE="\n"
-JOBS="\j"
 
 ## PS1
 STARTCOLOR='\e[33m';
