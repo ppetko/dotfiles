@@ -23,37 +23,21 @@ export PATH=$PATH:$GOROOT/bin
 export GOPATH=/home/$USER/gocode/
 export PATH=$GOPATH/bin:$PATH
 
-# Reset
-RESET="\[\033[0m\]"
+parse_git_branch() {
+git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' 
+}
 
-# Regular Colors
-BLACK="\[\033[0;30m\]"
-RED="\[\033[0;31m\]"
-GREEN="\[\033[0;32m\]"
-YELLOW="\[\033[0;33m\]"
-BLUE="\[\033[0;34m\]"
-PURPLE="\[\033[0;35m\]"
-CYAN="\[\033[0;36m\]"
-WHITE="\[\033[0;37m\]"
-
-# PS1 Prompt variables
-USER="\u"
-HOST="\h"
-TIME12H="\T"
-TIME12A="\@"
-PATHSHORT="\W"
-PATHFULL="\w"
-NEWLINE="\n"
-JOBS="\j"
+##_ps1_symbol='\[\e[38;2;0;255;0;48;2;70;70;70m\] \$ \[\e[0m\]\[\e[38;2;70;70;70m\]\[\e[0m\]'
+export PS1='\[\e]0;\w\a\]\[\e[38;2;40;40;40;48;2;153;204;255m\] \u\[\e[38;2;255;57;57;48;2;153;204;255m\]  \[\e[0m\]\[\e[38;2;40;40;40;48;2;153;204;255m\]\h \[\e[0m\]\[\e[38;2;153;204;255;48;2;255;150;50m\]\[\e[0m\]\[\e[38;2;40;40;40;48;2;255;150;50m\] \W \[\e[0m\]\[\e[38;2;255;150;50;48;2;70;70;70m\]\[\e[0m\]$(parse_git_branch)"\[\e[38;2;0;255;0;48;2;70;70;70m\] %s \[\e[0m\]\[\e[38;2;0;0;0;48;2;70;70;70m\] \[\e[0m\]") '
 
 ## PS1
-STARTCOLOR='\e[33m';
-ENDCOLOR="\e[0m"
-PS1="\[\`if [[ \$? = "0" ]]; then
-        echo '$STARTCOLOR╔ǁ\u$ENDCOLOR@\e[32m\h\e[0m';
-else
-        echo '$STARTCOLOR╔ǁ\u@$ENDCOLOR\e[31m\h\e[0m';
-    fi \`:\w \$(/bin/ls -1 | /usr/bin/wc -l) files, \$(/bin/ls -lah | /usr/bin/grep -m 1 total | /bin/sed 's/total //') $STARTCOLOR \$(git branch 2>/dev/null | sed -n '/^\*/s/^\* //p') $ENDCOLOR \n╚═>"
+#STARTCOLOR='\e[33m';
+#ENDCOLOR="\e[0m"
+#PS1="\[\`if [[ \$? = "0" ]]; then
+#        echo '$STARTCOLOR╔ǁ\u$ENDCOLOR@\e[32m\h\e[0m';
+#else
+#        echo '$STARTCOLOR╔ǁ\u@$ENDCOLOR\[\e[38;2;0;0;0;48;2;70;70;70m\] \[\e[0m\]';
+#fi \`:\w \$(/bin/ls -1 | /usr/bin/wc -l) files, \$(/bin/ls -lah | /usr/bin/grep -m 1 total | /bin/sed 's/total //') $STARTCOLOR $(parse_git_branch) $ENDCOLOR \n╚═>"
 
 
 ## Alias
